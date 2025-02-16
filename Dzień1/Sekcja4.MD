@@ -133,18 +133,13 @@ Jeśli wynik zwróci **„Witaj w AWS EC2”**, serwer działa poprawnie.
    import json
    import time
    import boto3
-   from aws_xray_sdk.core import patch_all, xray_recorder
-
-   patch_all()
 
    def lambda_handler(event, context):
-       xray_recorder.begin_segment("LambdaXRaySegment")
        time.sleep(1)  # Symulacja opóźnienia
        response = {
            "statusCode": 200,
            "body": json.dumps("Hello from AWS Lambda with X-Ray!")
        }
-       xray_recorder.end_segment()
        return response
    ```
 2. Kliknij **Deploy**.  
