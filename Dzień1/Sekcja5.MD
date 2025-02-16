@@ -149,7 +149,7 @@ aws logs tail "/aws/lambda/MyFirstLambda" --follow
 ```
 </details>
 
-**Tworzenie funkcji Lambda wywoływanej przez Amazon S3**
+**Tworzenie funkcji Lambda wywoływanej przez Amazon S3**   
 Skonfiguruj funkcję Lambda tak, aby była automatycznie wywoływana w momencie przesłania nowego pliku do określonego bucketa Amazon S3. Funkcja powinna odczytać metadane pliku i zapisać je w logach CloudWatch.  
 
 <details>
@@ -321,7 +321,7 @@ aws logs tail "/aws/lambda/S3TriggerLambda" --follow
 ---
 
 
-**Analiza logów funkcji Lambda w Amazon CloudWatch**
+**Analiza logów funkcji Lambda w Amazon CloudWatch**  
 Uruchom funkcję AWS Lambda kilka razy i przeanalizuj jej logi w Amazon CloudWatch. Zidentyfikuj czas wykonania oraz ewentualne błędy.  
 
 <details>
@@ -477,7 +477,7 @@ aws logs tail "/aws/lambda/LambdaLoggingDemo" --follow
 ---
 
 
-**Wyzwalanie AWS Lambda za pomocą Amazon SNS**
+**Wyzwalanie AWS Lambda za pomocą Amazon SNS**   
 Skonfiguruj Amazon SNS tak, aby wiadomości publikowane w temacie SNS automatycznie wywoływały funkcję Lambda. Sprawdź, czy funkcja poprawnie przetwarza otrzymane wiadomości.  
 
 <details>
@@ -646,7 +646,7 @@ aws logs tail "/aws/lambda/SNSLambdaHandler" --follow
 ```
 </details>
 
-**Automatyczne przetwarzanie wiadomości z Amazon SQS przez AWS Lambda**
+**Automatyczne przetwarzanie wiadomości z Amazon SQS przez AWS Lambda**   
 Stwórz kolejkę Amazon SQS i skonfiguruj AWS Lambda do automatycznego przetwarzania wiadomości. Upewnij się, że wiadomości są odbierane i poprawnie logowane przez funkcję.  
 
 <details>
@@ -701,8 +701,6 @@ Stwórz kolejkę Amazon SQS i skonfiguruj AWS Lambda do automatycznego przetwarz
 3. Wybierz **SQS** jako źródło wyzwalania.  
 4. Wybierz utworzoną wcześniej kolejkę **LambdaSQSQueue**.  
 5. Kliknij **Add**.  
-
-📌 **Teraz każda wiadomość wysłana do SQS automatycznie wywoła funkcję Lambda!**  
 
 ---
 
