@@ -1060,3 +1060,56 @@ Przykładowa odpowiedź:
 ```
 </details>
 
+**Ustawienie zasad wymuszających silne hasła dla użytkowników IAM**
+- Skonfiguruj politykę haseł IAM, aby wymagała minimum 12 znaków, co najmniej jednej wielkiej litery, cyfry i znaku specjalnego.  
+- Przetestuj logowanie użytkownika IAM, aby sprawdzić, czy polityka jest przestrzegana.  
+
+<details>
+    <summary>Instrukcja krok po kroku AWS GUI</summary>
+
+### **1. Przejście do ustawień polityki haseł IAM**  
+1. Zaloguj się do **AWS Management Console**.  
+2. Przejdź do **IAM (Identity and Access Management)**.  
+3. W menu bocznym kliknij **Account settings**.  
+4. W sekcji **Password policy** kliknij **Edit password policy**.  
+
+---
+
+### **2. Konfiguracja polityki haseł**  
+1. Zaznacz następujące opcje:  
+   - **Require at least one uppercase letter** (Wymagaj co najmniej jednej wielkiej litery).  
+   - **Require at least one lowercase letter** (Wymagaj co najmniej jednej małej litery).  
+   - **Require at least one number** (Wymagaj co najmniej jednej cyfry).  
+   - **Require at least one non-alphanumeric character** (Wymagaj co najmniej jednego znaku specjalnego).  
+   - **Enable password expiration** (Wymuś zmianę hasła co X dni) – opcjonalnie, np. 90 dni.  
+   - **Prevent password reuse** (Uniemożliwiaj ponowne użycie ostatnich haseł) – np. ostatnich 5 haseł.  
+2. Ustaw **Minimum password length**: `12`.  
+3. Kliknij **Save changes**.  
+</details>
+
+<details>
+    <summary>Instrukcja krok po kroku AWS CLI</summary>
+
+### **1. Sprawdzenie aktualnej polityki haseł IAM**  
+```sh
+aws iam get-account-password-policy
+```
+Jeśli polityka nie jest jeszcze ustawiona, zobaczysz błąd:  
+```json
+An error occurred (NoSuchEntity) when calling the GetAccountPasswordPolicy operation
+```
+
+---
+
+### **2. Ustawienie nowej polityki haseł**  
+```sh
+aws iam update-account-password-policy \
+    --minimum-password-length 12 \
+    --require-uppercase-characters \
+    --require-lowercase-characters \
+    --require-numbers \
+    --require-symbols \
+    --password-reuse-prevention 5 \
+    --max-password-age 90
+```
+</details>
