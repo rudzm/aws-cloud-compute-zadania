@@ -1,4 +1,4 @@
-### **Zadania praktyczne dla sekcji 6: AWS Security** 
+### **Zadania praktyczne dla sekcji 6 i 7: AWS Security i IAM** 
 
 ---
 
