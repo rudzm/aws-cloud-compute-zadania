@@ -6,7 +6,7 @@
 <details>
     <summary>Instrukcja krok po kroku AWS GUI</summary>
 
-### **1. Tworzenie reguły EventBridge do automatycznego uruchamiania instancji**  
+**1. Tworzenie reguły EventBridge do automatycznego uruchamiania instancji**  
 1. Przejdź do **AWS Management Console** → **EventBridge**.  
 2. Kliknij **Rules** → **Create rule**.  
 3. Wpisz **Rule name**: `StartEC2Instances`.  
@@ -22,7 +22,7 @@
 
 ---
 
-### **2. Tworzenie reguły EventBridge do automatycznego zatrzymywania instancji**  
+**2. Tworzenie reguły EventBridge do automatycznego zatrzymywania instancji**  
 1. Wróć do **AWS EventBridge** → **Rules** → **Create rule**.  
 2. Wpisz **Rule name**: `StopEC2Instances`.  
 3. W sekcji **Event source** wybierz **Schedule**.  
@@ -39,7 +39,7 @@
 <details>
     <summary>Instrukcja krok po kroku AWS CLI</summary>
 
-### **1. Tworzenie reguły EventBridge do uruchamiania instancji**  
+**1. Tworzenie reguły EventBridge do uruchamiania instancji**  
 ```sh
 aws events put-rule \
     --name "StartEC2Instances" \
@@ -73,7 +73,7 @@ aws iam put-role-policy \
 
 ---
 
-### **2. Tworzenie reguły EventBridge do zatrzymywania instancji**  
+**2. Tworzenie reguły EventBridge do zatrzymywania instancji**  
 ```sh
 aws events put-rule \
     --name "StopEC2Instances" \
@@ -115,7 +115,7 @@ aws iam put-role-policy \
 <details>
     <summary>Instrukcja krok po kroku AWS GUI</summary>
 
-### **1. Przygotowanie instancji EC2 przed utworzeniem AMI**  
+**1. Przygotowanie instancji EC2 przed utworzeniem AMI**  
 1. Przejdź do **AWS Management Console** → **EC2**.  
 2. Wybierz instancję, którą chcesz sklonować do obrazu AMI.  
 3. (Opcjonalnie) Jeśli chcesz uwzględnić najnowsze zmiany, uruchom w terminalu:  
@@ -130,7 +130,7 @@ aws iam put-role-policy \
 
 ---
 
-### **2. Tworzenie obrazu AMI**  
+**2. Tworzenie obrazu AMI**  
 1. Przejdź do **AWS EC2** → **Instances**.  
 2. Wybierz instancję, którą chcesz sklonować.  
 3. Kliknij **Actions** → **Image and templates** → **Create Image**.  
@@ -143,7 +143,7 @@ aws iam put-role-policy \
 
 ---
 
-### **3. Sprawdzenie gotowego obrazu AMI**  
+**3. Sprawdzenie gotowego obrazu AMI**  
 1. Przejdź do **AWS EC2** → **Images** → **AMIs**.  
 2. Znajdź utworzony obraz `MyCustomAMI`.  
 3. Po zakończeniu procesu status zmieni się na **Available**.  
@@ -155,7 +155,7 @@ aws iam put-role-policy \
 <details>
     <summary>Instrukcja krok po kroku AWS CLI</summary>
 
-### **1. Pobranie ID instancji EC2**  
+**1. Pobranie ID instancji EC2**  
 ```sh
 aws ec2 describe-instances --query "Reservations[*].Instances[*].InstanceId" --output text
 ```
@@ -163,7 +163,7 @@ Załóżmy, że ID instancji to `i-0123456789abcdef0`.
 
 ---
 
-### **2. Tworzenie obrazu AMI z instancji EC2**  
+**2. Tworzenie obrazu AMI z instancji EC2**  
 ```sh
 aws ec2 create-image \
     --instance-id i-0123456789abcdef0 \
@@ -175,7 +175,7 @@ aws ec2 create-image \
 
 ---
 
-### **3. Sprawdzenie statusu obrazu AMI**  
+**3. Sprawdzenie statusu obrazu AMI**  
 ```sh
 aws ec2 describe-images --owners self --query "Images[*].[ImageId,State,Name]" --output table
 ```
@@ -183,7 +183,7 @@ aws ec2 describe-images --owners self --query "Images[*].[ImageId,State,Name]" -
 
 ---
 
-### **4. Tworzenie nowej instancji EC2 z obrazu AMI**  
+**4. Tworzenie nowej instancji EC2 z obrazu AMI**  
 Po utworzeniu AMI możesz z niego uruchomić nową instancję:  
 ```sh
 aws ec2 run-instances \
@@ -205,7 +205,7 @@ aws ec2 run-instances \
 <details>
     <summary>Instrukcja krok po kroku AWS GUI</summary>
 
-### **1. Znalezienie utworzonego obrazu AMI**  
+**1. Znalezienie utworzonego obrazu AMI**  
 1. Przejdź do **AWS Management Console** → **EC2**.  
 2. W lewym menu kliknij **AMIs** (Images).  
 3. Znajdź obraz AMI, który chcesz udostępnić.  
@@ -213,7 +213,7 @@ aws ec2 run-instances \
 
 ---
 
-### **2. Udostępnienie AMI innemu kontu AWS**  
+**2. Udostępnienie AMI innemu kontu AWS**  
 1. W sekcji **Image Permissions** wybierz **Private**.  
 2. W polu **Account ID** wpisz identyfikator konta AWS, któremu chcesz udostępnić obraz.  
 3. Kliknij **Add Permission**.  
@@ -223,7 +223,7 @@ aws ec2 run-instances \
 
 ---
 
-### **3. Udostępnienie powiązanych snapshotów (jeśli AMI korzysta z EBS)**  
+**3. Udostępnienie powiązanych snapshotów (jeśli AMI korzysta z EBS)**  
 Jeśli obraz AMI używa wolumenów **EBS**, musisz również udostępnić powiązany snapshot:  
 1. Przejdź do **AWS EC2** → **Snapshots**.  
 2. Znajdź snapshot powiązany z AMI.  
@@ -237,7 +237,7 @@ Jeśli obraz AMI używa wolumenów **EBS**, musisz również udostępnić powią
 <details>
     <summary>Instrukcja krok po kroku AWS CLI</summary>
 
-### **1. Pobranie listy dostępnych AMI**  
+**1. Pobranie listy dostępnych AMI**  
 ```sh
 aws ec2 describe-images --owners self --query "Images[*].[ImageId,Name]" --output table
 ```
@@ -245,7 +245,7 @@ Załóżmy, że AMI ma ID: `ami-0123456789abcdef0`.
 
 ---
 
-### **2. Udostępnienie AMI innemu kontu AWS**  
+**2. Udostępnienie AMI innemu kontu AWS**  
 ```sh
 aws ec2 modify-image-attribute \
     --image-id ami-0123456789abcdef0 \
@@ -255,7 +255,7 @@ aws ec2 modify-image-attribute \
 
 ---
 
-### **3. Udostępnienie powiązanego snapshotu (jeśli AMI używa EBS)**  
+**3. Udostępnienie powiązanego snapshotu (jeśli AMI używa EBS)**  
 📌 Najpierw znajdź snapshot powiązany z AMI:  
 ```sh
 aws ec2 describe-images --image-ids ami-0123456789abcdef0 \
@@ -276,7 +276,7 @@ aws ec2 modify-snapshot-attribute \
 
 ---
 
-### **4. Sprawdzenie, czy AMI zostało poprawnie udostępnione**  
+**4. Sprawdzenie, czy AMI zostało poprawnie udostępnione**  
 ```sh
 aws ec2 describe-image-attribute \
     --image-id ami-0123456789abcdef0 \
@@ -295,7 +295,7 @@ aws ec2 describe-image-attribute \
 <details>
     <summary>Instrukcja krok po kroku AWS GUI</summary>
 
-### **1. Tworzenie snapshotu EBS**  
+**1. Tworzenie snapshotu EBS**  
 1. Przejdź do **AWS Management Console** → **EC2**.  
 2. W lewym menu kliknij **Volumes**.  
 3. Wybierz wolumen powiązany z Twoją instancją EC2.  
@@ -307,13 +307,13 @@ aws ec2 describe-image-attribute \
 
 ---
 
-### **2. Sprawdzenie statusu snapshotu**  
+**2. Sprawdzenie statusu snapshotu**  
 1. Przejdź do **AWS EC2** → **Snapshots**.  
 2. Znajdź utworzony snapshot – status powinien zmienić się na **Completed**.  
 
 ---
 
-### **3. Tworzenie nowego wolumenu EBS z istniejącego snapshotu**  
+**3. Tworzenie nowego wolumenu EBS z istniejącego snapshotu**  
 1. Przejdź do **AWS EC2** → **Snapshots**.  
 2. Zaznacz snapshot i kliknij **Actions** → **Create Volume**.  
 3. Wybierz ten sam **region** co instancja EC2.  
@@ -324,7 +324,7 @@ aws ec2 describe-image-attribute \
 
 ---
 
-### **4. Podłączenie nowego wolumenu do instancji EC2**  
+**4. Podłączenie nowego wolumenu do instancji EC2**  
 1. Przejdź do **AWS EC2** → **Volumes**.  
 2. Zaznacz nowy wolumen i kliknij **Actions** → **Attach Volume**.  
 3. Wybierz instancję EC2 i nazwę urządzenia (np. `/dev/sdf`).  
@@ -337,7 +337,7 @@ aws ec2 describe-image-attribute \
 <details>
     <summary>Instrukcja krok po kroku AWS CLI</summary>
 
-### **1. Tworzenie snapshotu EBS**  
+**1. Tworzenie snapshotu EBS**  
 📌 Pobierz **ID wolumenu**, który chcesz zbackupować:  
 ```sh
 aws ec2 describe-volumes --query "Volumes[*].[VolumeId,Size,State]" --output table
@@ -351,7 +351,7 @@ aws ec2 create-snapshot --volume-id vol-0123456789abcdef0 --description "Backup 
 
 ---
 
-### **2. Sprawdzenie statusu snapshotu**  
+**2. Sprawdzenie statusu snapshotu**  
 ```sh
 aws ec2 describe-snapshots --query "Snapshots[*].[SnapshotId,State,StartTime]" --output table
 ```
@@ -359,7 +359,7 @@ aws ec2 describe-snapshots --query "Snapshots[*].[SnapshotId,State,StartTime]" -
 
 ---
 
-### **3. Tworzenie nowego wolumenu EBS ze snapshotu**  
+**3. Tworzenie nowego wolumenu EBS ze snapshotu**  
 📌 Pobierz **ID snapshotu**:  
 ```sh
 aws ec2 describe-snapshots --query "Snapshots[*].[SnapshotId]" --output text
@@ -374,7 +374,7 @@ aws ec2 create-volume --snapshot-id snap-0123456789abcdef0 --availability-zone u
 
 ---
 
-### **4. Podłączenie wolumenu do instancji EC2**  
+**4. Podłączenie wolumenu do instancji EC2**  
 📌 Pobierz **ID instancji EC2**, do której chcesz podłączyć nowy wolumen:  
 ```sh
 aws ec2 describe-instances --query "Reservations[*].Instances[*].InstanceId" --output text
@@ -398,7 +398,7 @@ aws ec2 attach-volume --volume-id vol-0123456789abcdef0 --instance-id i-01234567
 <details>
     <summary>Instrukcja krok po kroku AWS GUI</summary>
 
-### **1. Tworzenie polityki automatycznego tworzenia snapshotów**  
+**1. Tworzenie polityki automatycznego tworzenia snapshotów**  
 1. Przejdź do **AWS Management Console** → **EC2**.  
 2. W lewym menu wybierz **Lifecycle Manager** (w sekcji Elastic Block Store).  
 3. Kliknij **Create lifecycle policy**.  
@@ -407,7 +407,7 @@ aws ec2 attach-volume --volume-id vol-0123456789abcdef0 --instance-id i-01234567
 
 ---
 
-### **2. Konfiguracja reguł tworzenia snapshotów**  
+**2. Konfiguracja reguł tworzenia snapshotów**  
 1. **Target resources**:  
    - Wybierz **Instance or Volume tags** i dodaj tag, np.  
      - **Key**: `Backup`  
@@ -429,7 +429,7 @@ aws ec2 attach-volume --volume-id vol-0123456789abcdef0 --instance-id i-01234567
 <details>
     <summary>Instrukcja krok po kroku AWS CLI</summary>
 
-### **1. Tworzenie polityki Data Lifecycle Manager (DLM)**  
+**1. Tworzenie polityki Data Lifecycle Manager (DLM)**  
 ```sh
 aws dlm create-lifecycle-policy \
     --execution-role-arn arn:aws:iam::123456789012:role/AWSDataLifecycleManagerDefaultRole \
@@ -450,7 +450,7 @@ aws dlm create-lifecycle-policy \
 
 ---
 
-### **2. Sprawdzenie statusu polityki**  
+**2. Sprawdzenie statusu polityki**  
 ```sh
 aws dlm get-lifecycle-policies
 ```
@@ -458,7 +458,7 @@ aws dlm get-lifecycle-policies
 
 ---
 
-### **3. Dodanie tagu do wolumenu EBS, aby polityka działała**  
+**3. Dodanie tagu do wolumenu EBS, aby polityka działała**  
 📌 Pobierz **ID wolumenu**, który chcesz objąć polityką:  
 ```sh
 aws ec2 describe-volumes --query "Volumes[*].[VolumeId]" --output text
@@ -474,7 +474,7 @@ aws ec2 create-tags --resources vol-0123456789abcdef0 --tags Key=Backup,Value=Da
 
 ---
 
-### **4. Sprawdzenie utworzonych snapshotów**  
+**4. Sprawdzenie utworzonych snapshotów**  
 ```sh
 aws ec2 describe-snapshots --owner-id 123456789012 --query "Snapshots[*].[SnapshotId,StartTime]" --output table
 ```
@@ -490,7 +490,7 @@ aws ec2 describe-snapshots --owner-id 123456789012 --query "Snapshots[*].[Snapsh
 <details>
     <summary>Instrukcja krok po kroku AWS GUI</summary>
 
-### **1. Znalezienie snapshotu do skopiowania**
+**1. Znalezienie snapshotu do skopiowania**
 1. Przejdź do **AWS Management Console** → **EC2**.  
 2. W lewym menu kliknij **Snapshots**.  
 3. Znajdź snapshot, który chcesz skopiować, i zaznacz go.  
@@ -498,7 +498,7 @@ aws ec2 describe-snapshots --owner-id 123456789012 --query "Snapshots[*].[Snapsh
 
 ---
 
-### **2. Konfiguracja kopiowania snapshotu**
+**2. Konfiguracja kopiowania snapshotu**
 1. W polu **Destination region** wybierz region docelowy (np. `us-west-2`).  
 2. Wpisz **Description**, np. `Copy of snapshot for backup`.  
 3. (Opcjonalnie) Wybierz **Encryption**:  
@@ -510,7 +510,7 @@ aws ec2 describe-snapshots --owner-id 123456789012 --query "Snapshots[*].[Snapsh
 
 ---
 
-### **3. Sprawdzenie skopiowanego snapshotu**
+**3. Sprawdzenie skopiowanego snapshotu**
 1. Zmień region w prawym górnym rogu na region docelowy (`us-west-2`).  
 2. Przejdź do **EC2** → **Snapshots**.  
 3. Znajdź nowo skopiowany snapshot – powinien mieć status **completed**.  
@@ -522,7 +522,7 @@ aws ec2 describe-snapshots --owner-id 123456789012 --query "Snapshots[*].[Snapsh
 <details>
     <summary>Instrukcja krok po kroku AWS CLI</summary>
 
-### **1. Pobranie listy snapshotów w regionie źródłowym**  
+**1. Pobranie listy snapshotów w regionie źródłowym**  
 ```sh
 aws ec2 describe-snapshots --owner-id 123456789012 --region us-east-1 \
     --query "Snapshots[*].[SnapshotId,StartTime]" --output table
@@ -533,7 +533,7 @@ Załóżmy, że snapshot do skopiowania ma ID: `snap-0123456789abcdef0`.
 
 ---
 
-### **2. Kopiowanie snapshotu do nowego regionu**  
+**2. Kopiowanie snapshotu do nowego regionu**  
 ```sh
 aws ec2 copy-snapshot \
     --source-region us-east-1 \
@@ -545,7 +545,7 @@ aws ec2 copy-snapshot \
 
 ---
 
-### **3. Sprawdzenie statusu kopiowanego snapshotu**  
+**3. Sprawdzenie statusu kopiowanego snapshotu**  
 ```sh
 aws ec2 describe-snapshots --owner-id 123456789012 --region us-west-2 \
     --query "Snapshots[*].[SnapshotId,State,StartTime]" --output table
@@ -554,7 +554,7 @@ aws ec2 describe-snapshots --owner-id 123456789012 --region us-west-2 \
 
 ---
 
-### **4. Tworzenie wolumenu EBS z nowego snapshotu w regionie docelowym**  
+**4. Tworzenie wolumenu EBS z nowego snapshotu w regionie docelowym**  
 ```sh
 aws ec2 create-volume \
     --snapshot-id snap-0123456789abcdef0 \
@@ -573,7 +573,7 @@ aws ec2 create-volume \
 <details>
     <summary>Instrukcja krok po kroku AWS GUI</summary>
 
-### **1. Konfiguracja AWS Systems Manager na instancji EC2**
+**1. Konfiguracja AWS Systems Manager na instancji EC2**
 1. Przejdź do **AWS Management Console** → **EC2**.  
 2. Wybierz instancję EC2 i przejdź do zakładki **Permissions**.  
 3. Upewnij się, że instancja ma rolę IAM z polityką **AmazonSSMManagedInstanceCore**:  
@@ -581,7 +581,7 @@ aws ec2 create-volume \
 
 ---
 
-### **2. Tworzenie polityki aktualizacji w AWS Systems Manager**
+**2. Tworzenie polityki aktualizacji w AWS Systems Manager**
 1. Przejdź do **AWS Systems Manager** → **Patch Manager**.  
 2. Kliknij **Configure patch policies**.  
 3. Wybierz opcję **Create patch policy**.  
@@ -601,7 +601,7 @@ aws ec2 create-volume \
 <details>
     <summary>Instrukcja krok po kroku AWS CLI</summary>
 
-### **1. Dodanie roli IAM do instancji EC2**
+**1. Dodanie roli IAM do instancji EC2**
 📌 Sprawdź, czy instancja EC2 ma odpowiednią rolę:  
 ```sh
 aws ec2 describe-instances \
@@ -636,7 +636,7 @@ aws ec2 associate-iam-instance-profile \
 
 ---
 
-### **2. Tworzenie polityki aktualizacji w Systems Manager**
+**2. Tworzenie polityki aktualizacji w Systems Manager**
 📌 Utwórz politykę Patch Manager dla Amazon Linux 2:  
 ```sh
 aws ssm create-patch-baseline \
@@ -648,7 +648,7 @@ aws ssm create-patch-baseline \
 
 ---
 
-### **3. Przypisanie polityki do instancji EC2**  
+**3. Przypisanie polityki do instancji EC2**  
 📌 Pobierz **ID polityki** Patch Manager:  
 ```sh
 aws ssm describe-patch-baselines --query "BaselineIdentities[*].[BaselineId,Name]" --output table
@@ -662,7 +662,7 @@ aws ssm register-patch-baseline-for-patch-group \
 
 ---
 
-### **4. Wymuszenie aktualizacji systemu operacyjnego**
+**4. Wymuszenie aktualizacji systemu operacyjnego**
 📌 Uruchom proces aktualizacji:  
 ```sh
 aws ssm send-command \
@@ -673,7 +673,7 @@ aws ssm send-command \
 
 ---
 
-### **5. Sprawdzenie statusu aktualizacji**  
+**5. Sprawdzenie statusu aktualizacji**  
 📌 Monitorowanie statusu aktualizacji:  
 ```sh
 aws ssm list-command-invocations \
@@ -690,7 +690,7 @@ aws ssm list-command-invocations \
 <details>
     <summary>Instrukcja krok po kroku AWS GUI</summary>
 
-### **1. Upewnienie się, że instancja EC2 ma odpowiednią rolę IAM**  
+**1. Upewnienie się, że instancja EC2 ma odpowiednią rolę IAM**  
 1. Przejdź do **AWS Management Console** → **EC2**.  
 2. Wybierz swoją instancję EC2 i przejdź do zakładki **Security**.  
 3. Sprawdź, czy instancja ma przypisaną rolę IAM.  
@@ -705,7 +705,7 @@ aws ssm list-command-invocations \
 
 ---
 
-### **2. Włączenie AWS Systems Manager Agent na instancji**  
+**2. Włączenie AWS Systems Manager Agent na instancji**  
 📌 Jeśli korzystasz z **Amazon Linux 2** lub **Ubuntu**, agent jest domyślnie zainstalowany. Sprawdź jego status:  
 1. Połącz się do instancji (jeśli masz dostęp SSH).  
 2. Uruchom polecenie:  
@@ -726,7 +726,7 @@ aws ssm list-command-invocations \
 
 ---
 
-### **3. Połączenie z instancją EC2 przez Session Manager**  
+**3. Połączenie z instancją EC2 przez Session Manager**  
 1. Przejdź do **AWS Systems Manager** → **Session Manager**.  
 2. Kliknij **Start Session**.  
 3. Wybierz swoją instancję EC2 i kliknij **Start Session**.  
@@ -739,7 +739,7 @@ aws ssm list-command-invocations \
 <details>
     <summary>Instrukcja krok po kroku AWS CLI</summary>
 
-### **1. Sprawdzenie, czy instancja EC2 ma przypisaną rolę IAM**  
+**1. Sprawdzenie, czy instancja EC2 ma przypisaną rolę IAM**  
 ```sh
 aws ec2 describe-instances \
     --query "Reservations[*].Instances[*].[InstanceId,IamInstanceProfile.Arn]" --output table
@@ -748,7 +748,7 @@ aws ec2 describe-instances \
 
 ---
 
-### **2. Tworzenie roli IAM dla Session Manager**  
+**2. Tworzenie roli IAM dla Session Manager**  
 📌 Utwórz rolę IAM dla EC2:  
 ```sh
 aws iam create-role --role-name SSM-Session-Manager-Role \
@@ -778,7 +778,7 @@ aws ec2 associate-iam-instance-profile \
 
 ---
 
-### **3. Połączenie do instancji EC2 przez Session Manager w CLI**  
+**3. Połączenie do instancji EC2 przez Session Manager w CLI**  
 📌 Aby połączyć się do instancji EC2 przez AWS CLI:  
 ```sh
 aws ssm start-session --target i-0123456789abcdef0
@@ -787,7 +787,7 @@ aws ssm start-session --target i-0123456789abcdef0
 
 ---
 
-### **4. Sprawdzenie aktywnych sesji w Session Manager**  
+**4. Sprawdzenie aktywnych sesji w Session Manager**  
 ```sh
 aws ssm describe-sessions --state Active
 ```
@@ -796,7 +796,7 @@ aws ssm describe-sessions --state Active
 
 ---
 
-### **5. Zakończenie sesji Session Manager**  
+**5. Zakończenie sesji Session Manager**  
 📌 Aby zakończyć sesję, użyj:  
 ```sh
 aws ssm terminate-session --session-id session-0a1b2c3d4e5f6g7h8
